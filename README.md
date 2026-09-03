@@ -3,7 +3,7 @@
 **Building AI immunity among youth.**
 A working prototype from our submission to the UNESCO Youth Hackathon 2026 (*Play Your Part: Youth Designing the Future of Media and Information Literacy*).
 
-🔗 **[Try the live quiz](#)** *(add your GitHub Pages link here once published)*
+🔗 **[Try the live quiz](#)** https://madihadar.github.io/TrueTell/
 
 ## What this is
 
