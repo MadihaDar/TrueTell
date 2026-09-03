@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrueTell Digital — the SEE-IT quiz</title>
+<meta name="description" content="Eight real, documented cases. Some genuine, some AI-generated. Run them through SEE-IT and see what gave it away.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <a href="index.html" class="brand">TrueTell <small>SEE-IT</small></a>
+    <div class="nav-links">
+      <a href="index.html#why">Why</a>
+      <a href="index.html#method">The method</a>
+      <a href="index.html#formats">The kit</a>
+    </div>
+    <a href="facilitator-guide.pdf" class="nav-cta" download>Offline kit ↓</a>
+  </div>
+</nav>
+
+<div class="quiz-shell">
+
+  <div class="quiz-topbar">
+    <span id="topbar-label">CASE 0 OF 8</span>
+    <a href="index.html">Exit ×</a>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+
+  <div id="intro-screen" class="intro-card">
+    <h1>Eight files. Some real, some not.</h1>
+    <p>You're about to see eight things exactly as they spread online: a photo, a headline, a call, a clip. Some are genuine. Some are AI-generated. Before you decide, run each one through SEE-IT.</p>
+    <div class="method-mini">
+      <div><b>S</b>Source</div>
+      <div><b>E</b>Evidence</div>
+      <div><b>E</b>Emotion</div>
+      <div><b>I</b>Intent</div>
+      <div><b>T</b>Trace</div>
+    </div>
+    <p>Every case here really happened and is documented by independent news reporting — we didn't generate anything new to trick you. Tap a case to open your own copy of it, then call it: genuine, or AI-generated.</p>
+    <button class="btn btn-primary" id="start-btn">Open case 1 →</button>
+  </div>
+
+  <div id="quiz-screen" style="display:none;">
+    <div class="case-card">
+      <div class="case-meta">
+        <span id="case-tag">CASE 01</span><span class="dot">·</span><span id="case-type">IMAGE</span>
+      </div>
+      <div class="case-file-body" id="case-body"></div>
+      <div class="case-file-caption" id="case-caption"></div>
+    </div>
+
+    <div class="seeit-check" id="seeit-check"></div>
+
+    <div class="verdict-row" id="verdict-row">
+      <button class="verdict-btn genuine" data-v="real">This is genuine</button>
+      <button class="verdict-btn fake" data-v="ai">This is AI-generated</button>
+    </div>
+
+    <div class="result-card" id="result-card">
+      <div class="result-stamp" id="result-stamp"></div>
+      <h4 id="result-heading"></h4>
+      <p id="result-explanation"></p>
+      <div class="source" id="result-source"></div>
+    </div>
+
+    <button class="btn btn-primary next-btn" id="next-btn">Next case →</button>
+  </div>
+
+  <div id="end-screen" class="end-card" style="display:none;">
+    <h1>Case closed.</h1>
+    <div class="score-big" id="score-display">0 / 8</div>
+    <p id="score-message"></p>
+    <p>The score fades. The five questions shouldn't. Next time something in your feed feels a little too perfect, or a little too enraging — run it through SEE-IT before you share.</p>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:24px;">
+      <button class="btn btn-primary" id="restart-btn">Play again →</button>
+      <a href="index.html" class="btn btn-outline">Back to TrueTell</a>
+      <a href="facilitator-guide.pdf" class="btn btn-outline" download>Get the offline kit</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const seeitPrompts = [
+  {k:'S', label:'Source', tip:'Who posted this first — and can you tell if the account is actually who it claims to be?'},
+  {k:'E', label:'Evidence', tip:'Has anyone independent of the original poster confirmed this, or is it a single account being reshared?'},
+  {k:'E', label:'Emotion-check', tip:'Notice how you feel right now — fear, anger, urgency. That reaction is often the point.'},
+  {k:'I', label:'Intent', tip:'If this is fake, who gains from you believing it and passing it on?'},
+  {k:'T', label:'Trace', tip:'Try to follow this back to where it started. Does the trail lead somewhere real, or just fade out?'}
+];
+
+const cases = [
+  {
+    tag: 'CASE 01', type: 'IMAGE',
+    body: '"BREAKING: Large explosion near the Pentagon Complex in Washington, D.C." — a photo shows a plume of black smoke beside a large government building.',
+    caption: 'Shared Monday morning by several accounts, including ones impersonating a major news wire. Briefly moved the U.S. stock market before officials denied any incident.',
+    verdict: 'ai',
+    stampCorrect: 'CONFIRMED: AI-GENERATED',
+    explanation: "No independent witnesses ever surfaced despite the location being one of the busiest in the country, and open-source investigators quickly spotted the building's fence line merging strangely into a crowd barrier — a classic sign of AI-generated architecture. Officials confirmed within the hour that nothing had happened.",
+    source: 'NPR · The Washington Post · Al Jazeera, May 2023'
+  },
+  {
+    tag: 'CASE 02', type: 'PHOTOGRAPH',
+    body: 'A photograph from a 1969 Moon landing shows an astronaut planting a flag — the fabric appears to ripple, as if caught in a breeze.',
+    caption: 'Widely shared for decades with the caption: "There\'s no wind on the Moon. Explain that."',
+    verdict: 'real',
+    stampCorrect: 'CONFIRMED: GENUINE',
+    explanation: "Genuine. The flag was fitted with a horizontal rod specifically because there's no atmosphere to hold fabric flat — the \"ripple\" is the rod and the astronaut's hands still moving it into place, not wind. The landing sites have since been independently confirmed by laser retroreflectors still in use today and by high-resolution orbiter photos showing the equipment left behind.",
+    source: 'NASA mission archives · independent lunar orbiter imagery'
+  },
+  {
+    tag: 'CASE 03', type: 'VOICE CALL',
+    body: '"It\'s important that you save your vote for the November election." A robocall reaches thousands of voters two days before a primary, in a voice that sounds exactly like a sitting president.',
+    caption: 'The call urged recipients to skip the upcoming primary and used one of the president\'s well-known catchphrases earlier in the message.',
+    verdict: 'ai',
+    stampCorrect: 'CONFIRMED: AI-GENERATED',
+    explanation: "Digital forensics experts flagged an unnatural, clipped cadence toward the end of the recording — a common tell in cloned voices. The call was traced to a political consultant, who was later criminally charged and fined by federal regulators for voter suppression.",
+    source: 'NBC News · PBS NewsHour · NPR, January 2024'
+  },
+  {
+    tag: 'CASE 04', type: 'HOT MIC',
+    body: 'During a live summit, a sitting U.S. president is caught on an open microphone telling a foreign leader he\'ll have "more flexibility" after his re-election campaign — not realizing the feed was still recording.',
+    caption: 'Picked up by the official press pool microphone and broadcast live before anyone could cut the audio.',
+    verdict: 'real',
+    stampCorrect: 'CONFIRMED: GENUINE',
+    explanation: "Genuine. This was captured by the White House press pool's own equipment and confirmed on video by multiple wire services in the room at the time — an open mic, not a clone. A real hot-mic moment usually has grainy, ambient sound and video of the two people actually speaking, unlike a fabricated clip built from a static photo.",
+    source: '2012 press pool recordings, multiple outlets'
+  },
+  {
+    tag: 'CASE 05', type: 'AUDIO CLIP',
+    body: 'Two days before a national election, an audio clip surfaces appearing to capture a leading opposition politician calmly discussing with a journalist how to rig the vote.',
+    caption: 'Released during a legal pre-election media blackout, when journalists were barred from reporting on new election-related claims — so the clip could spread for two days before it was formally debunked.',
+    verdict: 'ai',
+    stampCorrect: 'CONFIRMED: AI-GENERATED',
+    explanation: "Fact-checkers flagged poor audio quality and unnatural speech patterns within hours, and both people named in the recording denied it ever happened. The timing — dropped right as reporting was legally restricted — was the real weapon: the Trace and Intent checks would have caught this even without any technical analysis.",
+    source: 'AFP · CNN · Harvard Kennedy School Misinformation Review, September 2023'
+  },
+  {
+    tag: 'CASE 06', type: 'SATELLITE HEADLINE',
+    body: '"Satellite images show roughly a third of the country underwater at once." A headline about catastrophic monsoon flooding spreads alongside aerial photos that look almost too extreme to be real.',
+    caption: 'Some readers assumed the images had to be exaggerated or digitally altered given the scale being claimed.',
+    verdict: 'real',
+    stampCorrect: 'CONFIRMED: GENUINE',
+    explanation: "Genuine — this describes Pakistan's 2022 floods, independently confirmed by multiple international space agencies and humanitarian organisations using satellite data, not a single viral account. The scale felt unbelievable, which is exactly why it's worth checking Evidence before assuming \"too extreme\" means \"fake.\"",
+    source: 'International satellite monitoring agencies and humanitarian reporting, 2022'
+  },
+  {
+    tag: 'CASE 07', type: 'VIDEO, LABELLED',
+    body: 'A jailed former prime minister\'s party posts a video of him giving a victory speech after election results come in. His face is from an older, real clip — but the voice, and everything it says, is new.',
+    caption: 'The party captioned the post "AI version" before sharing it to millions of followers.',
+    verdict: 'ai',
+    stampCorrect: 'CONFIRMED: AI-GENERATED (AND DISCLOSED)',
+    explanation: "This one is AI-generated and openly labelled as such by the people who made it — which is the twist. A visible label from the original poster doesn't erase the need for SEE-IT: the caption often disappears the moment a clip is re-shared or screen-recorded onto another account without it. Intent still matters even when nothing is hidden.",
+    source: 'Voicebot.ai · Bulletin of the Atomic Scientists, February 2024'
+  },
+  {
+    tag: 'CASE 08', type: 'PHONE CALL',
+    body: 'A mother answers a call from an unknown number and hears her teenage daughter\'s voice, sobbing: "Mom, I messed up." A man takes over the call demanding a ransom.',
+    caption: 'The daughter was actually away on a ski trip the entire time, safe, with no idea any of this was happening.',
+    verdict: 'ai',
+    stampCorrect: 'CONFIRMED: AI-GENERATED',
+    explanation: "The voice was cloned from only a few seconds of the daughter's real audio — likely pulled from something as ordinary as a public social media video. The mother later testified to lawmakers that it was \"completely her voice,\" inflection and all. Family members were confirmed safe within four minutes, once someone else in the room called to check.",
+    source: 'CNN · ABC News · U.S. Senate Special Committee on Aging testimony, 2023'
+  }
+];
+
+let idx = 0;
+let score = 0;
+let answered = false;
+
+const introScreen = document.getElementById('intro-screen');
+const quizScreen = document.getElementById('quiz-screen');
+const endScreen = document.getElementById('end-screen');
+const progressFill = document.getElementById('progress-fill');
+const topbarLabel = document.getElementById('topbar-label');
+
+function renderSeeit(){
+  const wrap = document.getElementById('seeit-check');
+  wrap.innerHTML = '';
+  seeitPrompts.forEach(p => {
+    const btn = document.createElement('button');
+    btn.innerHTML = `<span class="k">${p.k}</span><span><span style="color:var(--text-paper);font-weight:500;">${p.label}</span><span class="reveal-text">${p.tip}</span></span>`;
+    btn.addEventListener('click', () => btn.classList.toggle('opened'));
+    wrap.appendChild(btn);
+  });
+}
+
+function loadCase(){
+  answered = false;
+  const c = cases[idx];
+  document.getElementById('case-tag').textContent = c.tag;
+  document.getElementById('case-type').textContent = c.type;
+  document.getElementById('case-body').textContent = c.body;
+  document.getElementById('case-caption').textContent = c.caption;
+  topbarLabel.textContent = `CASE ${idx+1} OF ${cases.length}`;
+  progressFill.style.width = `${(idx/cases.length)*100}%`;
+  renderSeeit();
+  document.getElementById('verdict-row').style.display = 'flex';
+  document.getElementById('result-card').classList.remove('show','correct','incorrect');
+  document.getElementById('next-btn').classList.remove('show');
+}
+
+function submitVerdict(choice){
+  if(answered) return;
+  answered = true;
+  const c = cases[idx];
+  const correct = choice === c.verdict;
+  if(correct) score++;
+  document.getElementById('verdict-row').style.display = 'none';
+  const rc = document.getElementById('result-card');
+  rc.classList.add('show', correct ? 'correct' : 'incorrect');
+  document.getElementById('result-stamp').textContent = correct ? c.stampCorrect : 'YOU CALLED THIS ONE WRONG';
+  document.getElementById('result-heading').textContent = c.verdict === 'ai' ? 'It was AI-generated.' : 'It was genuine.';
+  document.getElementById('result-explanation').textContent = c.explanation;
+  document.getElementById('result-source').textContent = 'Source: ' + c.source;
+  document.getElementById('next-btn').classList.add('show');
+}
+
+document.getElementById('start-btn').addEventListener('click', () => {
+  introScreen.style.display = 'none';
+  quizScreen.style.display = 'block';
+  loadCase();
+});
+
+document.querySelectorAll('.verdict-btn').forEach(btn => {
+  btn.addEventListener('click', () => submitVerdict(btn.dataset.v));
+});
+
+document.getElementById('next-btn').addEventListener('click', () => {
+  idx++;
+  if(idx >= cases.length){
+    quizScreen.style.display = 'none';
+    endScreen.style.display = 'block';
+    progressFill.style.width = '100%';
+    topbarLabel.textContent = `CASE ${cases.length} OF ${cases.length}`;
+    document.getElementById('score-display').textContent = `${score} / ${cases.length}`;
+    let msg;
+    if(score === cases.length) msg = "A clean sweep. You ran every single case through SEE-IT and it held up.";
+    else if(score >= cases.length - 2) msg = "Strong instincts. A couple of these fool almost everyone the first time.";
+    else if(score >= cases.length/2) msg = "You're halfway to reflex. The ones you missed are worth a second look above.";
+    else msg = "This is exactly why TrueTell exists — these are getting harder to spot, on purpose.";
+    document.getElementById('score-message').textContent = msg;
+  } else {
+    loadCase();
+  }
+});
+
+document.getElementById('restart-btn').addEventListener('click', () => {
+  idx = 0; score = 0;
+  endScreen.style.display = 'none';
+  introScreen.style.display = 'block';
+  progressFill.style.width = '0%';
+  topbarLabel.textContent = `CASE 0 OF ${cases.length}`;
+});
+</script>
+
+</body>
+</html>
