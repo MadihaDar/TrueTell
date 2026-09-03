@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrueTell Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@tabler/icons-webfont@2.44.0/dist/tabler-icons.min.css">
+<style>
+  :root{
+    --surface-1:#ffffff;
+    --surface-2:#f6f4ee;
+    --border:#d9d4c6;
+    --radius:10px;
+
+    --text-primary:#1e1d19;
+    --text-secondary:#4c4941;
+    --text-muted:#84806f;
+
+    --bg-accent:#e9f0ea;
+    --text-accent:#2f6b4f;
+
+    --bg-success:#e7f4ea;
+    --text-success:#2c6e3a;
+
+    --bg-danger:#fbeceb;
+    --text-danger:#a8392c;
+  }
+
+  *{ box-sizing:border-box; }
+
+  body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#e9e6dc;
+    font-family:'Inter', -apple-system, sans-serif;
+    color:var(--text-primary);
+    padding:40px 16px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* readability upgrades only — sizes, contrast, spacing, button styling.
+     No structural, content, or logic changes below this line. */
+
+  p, div, span{ color:var(--text-primary); }
+
+  button{
+    font-family:'Inter', -apple-system, sans-serif;
+    font-size:14px;
+    font-weight:600;
+    padding:12px 14px;
+    border-radius:var(--radius);
+    border:1.5px solid var(--text-primary);
+    background:var(--text-primary);
+    color:var(--surface-1);
+    cursor:pointer;
+    transition:opacity .15s ease;
+  }
+  button:hover{ opacity:0.88; }
+  button:active{ transform:translateY(1px); }
+  button:disabled{ opacity:0.35; cursor:default; }
+
+  /* second button in each answer row (AI-generated) reads as an outline style
+     for visual distinction — purely a contrast/legibility aid, same action */
+  div[style*="display:flex;gap:8px;"] button:nth-child(2){
+    background:var(--surface-1);
+    color:var(--text-primary);
+  }
+
+  #card-done button, #next-1, #next-2, #next-3{
+    background:var(--text-accent);
+    border-color:var(--text-accent);
+    color:var(--surface-1);
+  }
+</style>
+</head>
+<body>
+<div style="max-width:380px;margin:0 auto;background:var(--surface-1);border-radius:20px;padding:1.25rem;">
+<h2 class="sr-only">Interactive mockup of the TrueTell quiz, showing a piece of content, the SEE-IT method checklist, and the reveal screen explaining whether it was AI-generated</h2>
+
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+  <span style="font-size:15px;font-weight:500;">TrueTell</span>
+  <span id="scorepill" style="font-size:12px;padding:3px 10px;border-radius:20px;background:var(--bg-accent);color:var(--text-accent);">Score: 0/3</span>
+</div>
+
+<div style="background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;padding:1rem;">
+
+  <div id="card-1" class="q-card">
+    <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px;">Round 1 of 3</div>
+    <div style="background:var(--surface-1);border-radius:var(--radius);padding:14px;margin-bottom:12px;">
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:6px;"><i class="ti ti-quote" style="font-size:14px;vertical-align:-2px;margin-right:4px;" aria-hidden="true"></i>Quote circulating on social media</div>
+      <p style="font-size:15px;margin:0;line-height:1.5;">"Health officials confirm the new vaccine batch was recalled nationwide this morning."</p>
+    </div>
+    <p style="font-size:13px;color:var(--text-secondary);margin:0 0 8px;">Run it through SEE-IT before you decide:</p>
+    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px;">
+      <div style="font-size:13px;padding:8px 10px;border:0.5px solid var(--border);border-radius:var(--radius);"><b style="font-weight:500;">Source</b> — no health authority account has posted this</div>
+      <div style="font-size:13px;padding:8px 10px;border:0.5px solid var(--border);border-radius:var(--radius);"><b style="font-weight:500;">Evidence</b> — not reported anywhere else</div>
+      <div style="font-size:13px;padding:8px 10px;border:0.5px solid var(--border);border-radius:var(--radius);"><b style="font-weight:500;">Emotion-check</b> — designed to trigger fast alarm</div>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button onclick="answer(1,'real')" style="flex:1;">Looks real</button>
+      <button onclick="answer(1,'fake')" style="flex:1;">AI-generated</button>
+    </div>
+    <div id="fb-1" style="display:none;margin-top:10px;font-size:13px;padding:10px;border-radius:var(--radius);"></div>
+    <button id="next-1" onclick="goTo(2)" style="display:none;margin-top:10px;width:100%;">Next round<i class="ti ti-arrow-right" style="font-size:14px;vertical-align:-2px;margin-left:4px;" aria-hidden="true"></i></button>
+  </div>
+
+  <div id="card-2" class="q-card" style="display:none;">
+    <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px;">Round 2 of 3</div>
+    <div style="background:var(--surface-1);border-radius:var(--radius);padding:14px;margin-bottom:12px;">
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:6px;"><i class="ti ti-microphone" style="font-size:14px;vertical-align:-2px;margin-right:4px;" aria-hidden="true"></i>Voice clip shared in a group chat</div>
+      <p style="font-size:15px;margin:0;line-height:1.5;">A 12-second clip of a local official "admitting" to election fraud.</p>
+    </div>
+    <p style="font-size:13px;color:var(--text-secondary);margin:0 0 8px;">Run it through SEE-IT before you decide:</p>
+    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px;">
+      <div style="font-size:13px;padding:8px 10px;border:0.5px solid var(--border);border-radius:var(--radius);"><b style="font-weight:500;">Intent</b> — who gains if this spreads right before an election?</div>
+      <div style="font-size:13px;padding:8px 10px;border:0.5px solid var(--border);border-radius:var(--radius);"><b style="font-weight:500;">Trace</b> — no original upload exists anywhere</div>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button onclick="answer(2,'real')" style="flex:1;">Looks real</button>
+      <button onclick="answer(2,'fake')" style="flex:1;">AI-generated</button>
+    </div>
+    <div id="fb-2" style="display:none;margin-top:10px;font-size:13px;padding:10px;border-radius:var(--radius);"></div>
+    <button id="next-2" onclick="goTo(3)" style="display:none;margin-top:10px;width:100%;">Next round<i class="ti ti-arrow-right" style="font-size:14px;vertical-align:-2px;margin-left:4px;" aria-hidden="true"></i></button>
+  </div>
+
+  <div id="card-3" class="q-card" style="display:none;">
+    <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px;">Round 3 of 3</div>
+    <div style="background:var(--surface-1);border-radius:var(--radius);padding:14px;margin-bottom:12px;">
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:6px;"><i class="ti ti-photo" style="font-size:14px;vertical-align:-2px;margin-right:4px;" aria-hidden="true"></i>Photo posted with a breaking-news caption</div>
+      <p style="font-size:15px;margin:0;line-height:1.5;">A crowd photo captioned "protesters flood the capital this morning."</p>
+    </div>
+    <p style="font-size:13px;color:var(--text-secondary);margin:0 0 8px;">Run it through SEE-IT before you decide:</p>
+    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px;">
+      <div style="font-size:13px;padding:8px 10px;border:0.5px solid var(--border);border-radius:var(--radius);"><b style="font-weight:500;">Evidence</b> — reverse image search finds this exact photo from 3 years ago</div>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button onclick="answer(3,'real')" style="flex:1;">Looks real</button>
+      <button onclick="answer(3,'fake')" style="flex:1;">AI-generated</button>
+    </div>
+    <div id="fb-3" style="display:none;margin-top:10px;font-size:13px;padding:10px;border-radius:var(--radius);"></div>
+    <button id="next-3" onclick="finish()" style="display:none;margin-top:10px;width:100%;">See results</button>
+  </div>
+
+  <div id="card-done" style="display:none;text-align:center;padding:8px 0;">
+    <i class="ti ti-shield-check" style="font-size:28px;color:var(--text-accent);" aria-hidden="true"></i>
+    <p style="font-size:16px;font-weight:500;margin:8px 0 4px;">You caught <span id="finalscore">0</span> of 3</p>
+    <p style="font-size:13px;color:var(--text-secondary);margin:0 0 12px;">Remember: Source, Evidence, Emotion-check, Intent, Trace.</p>
+    <button onclick="restart()" style="width:100%;"><i class="ti ti-refresh" style="font-size:14px;vertical-align:-2px;margin-right:4px;" aria-hidden="true"></i>Play again</button>
+  </div>
+
+</div>
+</div>
+<script>
+const answers = {1:'fake',2:'fake',3:'fake'};
+const explain = {
+  1:"AI-generated. No health authority ever posted this — it was written to spread panic fast, and panic is exactly what a real recall notice doesn't need to manufacture.",
+  2:"AI-generated. The voice was cloned. There's no original recording anywhere — only copies of this same 12 seconds, posted right before people needed to trust their ballot.",
+  3:"AI-generated, restaged as breaking news. It's a real photo, just not from today — reused with a new caption to look like it's happening right now."
+};
+let score = 0;
+function answer(round, choice){
+  const correct = choice === answers[round];
+  if(correct) score++;
+  document.getElementById('scorepill').textContent = 'Score: ' + score + '/3';
+  const fb = document.getElementById('fb-'+round);
+  fb.style.display = 'block';
+  fb.style.background = correct ? 'var(--bg-success)' : 'var(--bg-danger)';
+  fb.style.color = correct ? 'var(--text-success)' : 'var(--text-danger)';
+  fb.textContent = (correct ? 'Caught it. ' : 'It was AI-generated. ') + explain[round];
+  document.getElementById('next-'+round).style.display = 'block';
+  const buttons = document.querySelectorAll('#card-'+round+' > div:nth-last-child(3) button');
+  buttons.forEach(b => b.disabled = true);
+}
+function goTo(round){
+  document.querySelectorAll('.q-card').forEach(c => c.style.display = 'none');
+  document.getElementById('card-'+round).style.display = 'block';
+}
+function finish(){
+  document.querySelectorAll('.q-card').forEach(c => c.style.display = 'none');
+  document.getElementById('finalscore').textContent = score;
+  document.getElementById('card-done').style.display = 'block';
+}
+function restart(){
+  score = 0;
+  document.getElementById('scorepill').textContent = 'Score: 0/3';
+  [1,2,3].forEach(r=>{
+    document.getElementById('fb-'+r).style.display='none';
+    document.getElementById('next-'+r).style.display='none';
+    document.querySelectorAll('#card-'+r+' > div:nth-last-child(3) button').forEach(b=>b.disabled=false);
+  });
+  document.getElementById('card-done').style.display='none';
+  goTo(1);
+}
+</script>
+</body>
+</html>
