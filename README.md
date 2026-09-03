@@ -1,9 +1,9 @@
 # TrueTell
 
 **Building AI immunity among youth.**
-A working prototype from our submission to the UNESCO Youth Hackathon 2026 (*Play Your Part: Youth Designing the Future of Media and Information Literacy*).
+A working project built for our submission to the UNESCO Youth Hackathon 2026 (*Play Your Part: Youth Designing the Future of Media and Information Literacy*).
 
-🔗 **[Try the live quiz](https://madihadar.github.io/TrueTell/)** 
+🔗 **[Try the live site](https://truetell.netlify.app)**
 
 ## What this is
 
@@ -15,21 +15,32 @@ TrueTell teaches people to catch AI-generated misinformation using a 5-step meth
 - **I**ntent — who benefits if I believe and share this?
 - **T**race — can I trace this back to where it started, or does the trail just stop?
 
-This repo holds **TrueTell Digital**, an interactive quiz that walks through 3 real-style examples (a fabricated quote, a cloned voice clip, a recycled image) and applies SEE-IT to each — showing what actually gave the fake away.
+The project has two parts:
 
-The full proposal also includes **Immunity Circle**, an offline, no-phone-required version of the same method for community groups and youth organizations — currently in the design stage.
+- **TrueTell Digital** — a landing page and an 8-round browser quiz. Each round is a real, already-documented case — no new fakes were generated. Cases include the Pentagon fake-explosion image, the New Hampshire Biden robocall, the Slovak election audio, Imran Khan's disclosed AI victory video, and a DeStefano-style voice-clone scam call, alongside genuine-but-surprising cases used for contrast (e.g. the "rippling" Apollo flag photo).
+- **Immunity Circle** — the offline half: a facilitator guide and a set of printable scenario cards, for a 60-minute session any youth-group leader can run with no phone, internet, or media-literacy background required.
 
 ## Status
 
-This is a **working prototype**, built for the hackathon submission. It's a lean 3-round version of the fuller experience described in our proposal, built to prove the core idea works before scaling it up.
+Fully built and deployed. Landing page, quiz, facilitator guide, and printable cards are all live and functional.
 
 ## Tech
 
-Plain HTML, CSS, and JavaScript — no framework, no build step, no dependencies beyond fonts/icons loaded via CDN.
+Plain HTML, CSS, and JavaScript — no framework, no build step. Deployed via Netlify.
+
+## Files
+
+| File | Purpose |
+|---|---|
+| `index.html` | Landing page — the case, the method, the team |
+| `quiz.html` | TrueTell Digital — the 8-round interactive quiz |
+| `style.css` | Shared styling (case-file visual style) |
+| `facilitator-guide.pdf` | Immunity Circle session guide |
+| `cards.pdf` | Printable scenario cards for offline sessions |
 
 ## Team
 
-- **Madiha Dar** — Team Lead, built the interactive tool
+- **Madiha Dar** — Team Lead, built the interactive tool and the digital delivery
 - **Khadija Dar** — Research Lead, designed the offline session curriculum and verification standards
 
 ## License
