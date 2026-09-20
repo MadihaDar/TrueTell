@@ -3,7 +3,7 @@
 **Building AI immunity among youth.**
 A working project built for our submission to the UNESCO Youth Hackathon 2026 (*Play Your Part: Youth Designing the Future of Media and Information Literacy*).
 
-🔗 **[Try the live site](https://truetell.netlify.app)**
+🔗 **[Try the live site](https://madihadar.github.io/TrueTell/)**
 
 ## What this is
 
